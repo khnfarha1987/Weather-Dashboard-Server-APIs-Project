@@ -252,3 +252,29 @@ function getWeather(city) {
             alert('Unable to connect to Open Weather');
         });
 }
+
+//function to push button elements 
+
+function submitCitySearch(event) {
+    event.preventDefault();
+
+    //get value from user input
+    var city = titleCase(cityInputEl.val().trim());
+
+    //prevent them from searching for cities stored in local storage
+    if (searchHistoryArray.searchedCity.includes(city)) {
+        alert(city + ' is included in history below. Click the ' + city + ' button to get weather.');
+        cityInputEl.val('');
+    } else if (city) {
+        getWeather(city);
+        searchHistory(city);
+        searchHistoryArray.searchedCity.push(city);
+        saveSearchHistory();
+        //empty the form text area
+        cityInputEl.val('');
+
+        //if user doesn't type in a city
+    } else {
+        alert('Please enter a city');
+    }
+}
