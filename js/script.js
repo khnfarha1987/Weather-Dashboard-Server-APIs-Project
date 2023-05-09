@@ -23,3 +23,22 @@ function titleCase(str) {
     // Directly return the joined string
     return splitStr.join(' ');
 }
+
+//load cities from local storage and recreate history buttons
+function loadSearchHistory() {
+    var searchHistoryArray = JSON.parse(localStorage.getItem('search history'));
+
+    // if nothing in localStorage, create a new object to track all user info
+    if (!searchHistoryArray) {
+        searchHistoryArray = {
+            searchedCity: [],
+        };
+    } else {
+        //add search history buttons to page
+        for (var i = 0; i < searchHistoryArray.searchedCity.length; i++) {
+            searchHistory(searchHistoryArray.searchedCity[i]);
+        }
+    }
+
+    return searchHistoryArray;
+}
