@@ -66,3 +66,189 @@ function searchHistory(city) {
     // append btn to search history div
     searchHistoryEl.append(searchHistoryBtn);
 }
+
+//function to get weather data from apiUrl
+function getWeather(city) {
+    // apiUrl for coordinates
+    var apiCoordinatesUrl = openWeatherCoordinatesUrl + city + '&appid=' + openWeatherApiKey;
+    console.log(apiCoordinatesUrl);
+    // fetch the coordinates for parameter city
+    fetch(apiCoordinatesUrl)
+        .then(function (coordinateResponse) {
+            if (coordinateResponse.ok) {
+                coordinateResponse.json().then(function (data) {
+                    var cityLatitude = data.coord.lat;
+                    var cityLongitude = data.coord.lon;
+                    // fetch weather information
+                    var apiOneCallUrl = oneCallUrl + cityLatitude + '&lon=' + cityLongitude + '&appid=' + openWeatherApiKey + '&units=imperial';
+
+                    fetch(apiOneCallUrl)
+                        .then(function (weatherResponse) {
+                            if (weatherResponse.ok) {
+                                weatherResponse.json().then(function (weatherData) {
+
+                                    // ** START CURRENT DAY DISPLAY ** //
+
+                                    //add div to hold current day details
+                                    var currentWeatherEl = $('<div>')
+                                        .attr({
+                                            id: 'current-weather'
+                                        })
+
+                                    // get the weather icon from city
+                                    var weatherIcon = weatherData.current.weather[0].icon;
+                                    var cityCurrentWeatherIcon = weatherIconUrl + weatherIcon + '.png';
+
+                                    // create h2 to display city + current day + current weather icon
+                                    var currentWeatherHeadingEl = $('<h2>')
+                                        .text(city + ' (' + currentDay + ')');
+                                    // create img element to display icon
+                                    var iconImgEl = $('<img>')
+                                        .attr({
+                                            id: 'current-weather-icon',
+                                            src: cityCurrentWeatherIcon,
+                                            alt: 'Weather Icon'
+                                        })
+                                    //create list of current weather details
+                                    var currWeatherListEl = $('<ul>')
+
+                                    var currWeatherDetails = ['Temp: ' + weatherData.current.temp + ' °F', 'Wind: ' + weatherData.current.wind_speed + 'Humidity: ' + weatherData.current.humidity + '%', 'UV Index: ' + weatherData.current.uvi]
+
+                                    for (var i = 0; i < currWeatherDetails.length; i++) {
+                                        //create an indiviual list item and append to ul
+
+                                        // run conditional to assign background color to UV index depending how high it is
+                                        if (currWeatherDetails[i] === 'UV Index: ' + weatherData.current.uvi) {
+
+                                            var currWeatherListItem = $('<li>')
+                                                .text('UV Index: ')
+
+                                            currWeatherListEl.append(currWeatherListItem);
+
+                                            var uviItem = $('<span>')
+                                                .text(weatherData.current.uvi);
+
+                                            if (uviItem.text() <= 2) {
+                                                uviItem.addClass('favorable');
+                                            } else if (uviItem.text() > 2 && uviItem.text() <= 7) {
+                                                uviItem.addClass('moderate');
+                                            } else {
+                                                uviItem.addClass('severe');
+                                            }
+
+                                            currWeatherListItem.append(uviItem);
+
+                                            //create every list item that isn't uvIndex
+                                        } else {
+                                            var currWeatherListItem = $('<li>')
+                                                .text(currWeatherDetails[i])
+                                            //append to ul
+                                            currWeatherListEl.append(currWeatherListItem);
+                                        }
+
+                                    }
+
+                                    //append curr weather div to col2 before #five-day
+                                    $('#five-day').before(currentWeatherEl);
+                                    //append current weather heading to current weather div
+                                    currentWeatherEl.append(currentWeatherHeadingEl);
+                                    //append icon to current weather header
+                                    currentWeatherHeadingEl.append(iconImgEl);
+                                    //append ul to current weather
+                                    currentWeatherEl.append(currWeatherListEl);
+
+                                    // ** END CURRENT DAY DISPLAY ** //
+
+                                    // ** START 5-DAY FORECAST DISPLAY ** //
+
+                                    //create h2 header for 5-day forecast
+                                    var fiveDayHeaderEl = $('<h2>')
+                                        .text('5-Day Forecast:')
+                                        .attr({
+                                            id: 'five-day-header'
+                                        })
+
+                                    //append 5 day forecast header to col2 after current weather div
+                                    $('#current-weather').after(fiveDayHeaderEl)
+
+                                    // create array for the dates for the next 5 days
+
+                                    var fiveDayArray = [];
+
+                                    for (var i = 0; i < 5; i++) {
+                                        let forecastDate = moment().add(i + 1, 'days').format('M/DD/YYYY');
+
+                                        fiveDayArray.push(forecastDate);
+                                    }
+
+                                    // for each date in the array create a card displaying temp, wind and humidity
+                                    for (var i = 0; i < fiveDayArray.length; i++) {
+                                        // create a div for each card
+                                        var cardDivEl = $('<div>')
+                                            .addClass('col3');
+
+                                        // create div for the card body
+                                        var cardBodyDivEl = $('<div>')
+                                            .addClass('card-body');
+
+                                        // create the card-title
+                                        var cardTitleEl = $('<h3>')
+                                            .addClass('card-title')
+                                            .text(fiveDayArray[i]);
+
+                                        // create the icon for current day weather
+                                        var forecastIcon = weatherData.daily[i].weather[0].icon;
+
+                                        var forecastIconEl = $('<img>')
+                                            .attr({
+                                                src: weatherIconUrl + forecastIcon + '.png',
+                                                alt: 'Weather Icon'
+                                            });
+
+                                        // create card text displaying weather details
+                                        var currWeatherDetails = ['Temp: ' + weatherData.current.temp + ' °F', 'Wind: ' + weatherData.current.wind_speed + 'Humidity: ' + weatherData.current.humidity + '%', 'UV Index: ' + weatherData.current.uvi]
+                                        //create temp
+                                        var tempEL = $('<p>')
+                                            .addClass('card-text')
+                                            .text('Temp: ' + weatherData.daily[i].temp.max)
+                                        //create wind
+                                        var windEL = $('<p>')
+                                            .addClass('card-text')
+                                            .text('Wind: ' + weatherData.daily[i].wind_speed)
+                                        // create humidity
+                                        var humidityEL = $('<p>')
+                                            .addClass('card-text')
+                                            .text('Humidity: ' + weatherData.daily[i].humidity + '%')
+
+
+                                        //append cardDivEl to the #five-day container
+                                        fiveDayEl.append(cardDivEl);
+                                        //append cardBodyDivEL to cardDivEl
+                                        cardDivEl.append(cardBodyDivEl);
+                                        //append card title to card body
+                                        cardBodyDivEl.append(cardTitleEl);
+                                        //append icon to card body
+                                        cardBodyDivEl.append(forecastIconEl);
+                                        //append temp details to card body
+                                        cardBodyDivEl.append(tempEL);
+                                        //append wind details to card body
+                                        cardBodyDivEl.append(windEL);
+                                        //append humidity details to card body
+                                        cardBodyDivEl.append(humidityEL);
+                                    }
+
+                                    // ** END 5-DAY FORECAST DISPLAY ** //
+                                })
+                            }
+                        })
+                });
+                // if fetch goes through but Open Weather can't find details for city
+            } else {
+                alert('Error: Open Weather could not find city')
+            }
+        })
+        // if fetch fails
+        .catch(function (error) {
+            alert('Unable to connect to Open Weather');
+        });
+}
