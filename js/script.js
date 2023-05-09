@@ -1,4 +1,28 @@
-//start with global variables....
+// ** START PSEUDO CODE (subject to change) ** //
+
+// when user searches for a city (clicks search button):
+//  - store the user input in a variable
+//  - use a fetch api to get the current & future conditions for that city
+//  - store that city into local storage
+// use the data from fetch to populate in the current-weather container:
+//  - name and today's date as M/DD/YYY
+//  - temp
+//  - wind
+//  - humidity
+//  - UV index (color coded for favorable(green), moderate(yellow), or severe(red))
+// use the data from fetch to populate in the five-day container:
+//  - date
+//  - an icon reprsentation of weather conditions
+//  - the temp
+//  - wind speed
+//  - humidity
+// use data in local.storage to create a button under the <hr> in search area for city history
+//  - when you click the button it displays the current and future conditions for that city
+
+// ** END PSEUDO CODE ** //
+
+// START GLOBAL VARIABLES //
+
 var openWeatherApiKey = '26ba3a7e283acb9cd1e8665c6c3b319a';
 var openWeatherCoordinatesUrl = 'https://api.openweathermap.org/data/2.5/weather?q=';
 var oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat='
@@ -7,12 +31,13 @@ var col2El = $('.col-lg-9');
 var cityInputEl = $('#search-input');
 var fiveDayEl = $('#five-day');
 var searchHistoryEl = $('#history');
-var currentDay = moment().format('M/DD/YYYY');
+var currentDay = moment().format('DD/MM/YYYY');
 const weatherIconUrl = 'http://openweathermap.org/img/wn/';
 var searchHistoryArray = loadSearchHistory();
-//end of global variables//
 
-// Define function to capitalize the first letter of a string...
+// END GLOBAL VARIABLES //
+
+// Define function to capitalize the first letter of a string
 function titleCase(str) {
     var splitStr = str.toLowerCase().split(' ');
     for (var i = 0; i < splitStr.length; i++) {
@@ -80,7 +105,7 @@ function getWeather(city) {
                     var cityLatitude = data.coord.lat;
                     var cityLongitude = data.coord.lon;
                     // fetch weather information
-                    var apiOneCallUrl = oneCallUrl + cityLatitude + '&lon=' + cityLongitude + '&appid=' + openWeatherApiKey + '&units=imperial';
+                    var apiOneCallUrl = oneCallUrl + cityLatitude + '&lon=' + cityLongitude + '&appid=' + openWeatherApiKey + '&units=metric';
 
                     fetch(apiOneCallUrl)
                         .then(function (weatherResponse) {
@@ -112,33 +137,12 @@ function getWeather(city) {
                                     //create list of current weather details
                                     var currWeatherListEl = $('<ul>')
 
-                                    var currWeatherDetails = ['Temp: ' + weatherData.current.temp + ' °F', 'Wind: ' + weatherData.current.wind_speed + 'Humidity: ' + weatherData.current.humidity + '%', 'UV Index: ' + weatherData.current.uvi]
+                                    var currWeatherDetails = ['Temp: ' + weatherData.current.temp + ' °C', 'Wind: ' + weatherData.current.wind_speed + ' KPH', 'Humidity: ' + weatherData.current.humidity + '%']
 
                                     for (var i = 0; i < currWeatherDetails.length; i++) {
                                         //create an indiviual list item and append to ul
+                                        if (currWeatherDetails[i] === weatherData) {
 
-                                        // run conditional to assign background color to UV index depending how high it is
-                                        if (currWeatherDetails[i] === 'UV Index: ' + weatherData.current.uvi) {
-
-                                            var currWeatherListItem = $('<li>')
-                                                .text('UV Index: ')
-
-                                            currWeatherListEl.append(currWeatherListItem);
-
-                                            var uviItem = $('<span>')
-                                                .text(weatherData.current.uvi);
-
-                                            if (uviItem.text() <= 2) {
-                                                uviItem.addClass('favorable');
-                                            } else if (uviItem.text() > 2 && uviItem.text() <= 7) {
-                                                uviItem.addClass('moderate');
-                                            } else {
-                                                uviItem.addClass('severe');
-                                            }
-
-                                            currWeatherListItem.append(uviItem);
-
-                                            //create every list item that isn't uvIndex
                                         } else {
                                             var currWeatherListItem = $('<li>')
                                                 .text(currWeatherDetails[i])
@@ -176,7 +180,7 @@ function getWeather(city) {
                                     var fiveDayArray = [];
 
                                     for (var i = 0; i < 5; i++) {
-                                        let forecastDate = moment().add(i + 1, 'days').format('M/DD/YYYY');
+                                        let forecastDate = moment().add(i + 1, 'days').format('DD/MM/YYYY');
 
                                         fiveDayArray.push(forecastDate);
                                     }
@@ -206,15 +210,15 @@ function getWeather(city) {
                                             });
 
                                         // create card text displaying weather details
-                                        var currWeatherDetails = ['Temp: ' + weatherData.current.temp + ' °F', 'Wind: ' + weatherData.current.wind_speed + 'Humidity: ' + weatherData.current.humidity + '%', 'UV Index: ' + weatherData.current.uvi]
+                                        var currWeatherDetails = ['Temp: ' + weatherData.current.temp + ' °C', 'Wind: ' + weatherData.current.wind_speed + ' KPH', 'Humidity: ' + weatherData.current.humidity + '%']
                                         //create temp
                                         var tempEL = $('<p>')
                                             .addClass('card-text')
-                                            .text('Temp: ' + weatherData.daily[i].temp.max)
+                                            .text('Temp: ' + weatherData.daily[i].temp.max + ' °C')
                                         //create wind
                                         var windEL = $('<p>')
                                             .addClass('card-text')
-                                            .text('Wind: ' + weatherData.daily[i].wind_speed)
+                                            .text('Wind: ' + weatherData.daily[i].wind_speed + ' KPH')
                                         // create humidity
                                         var humidityEL = $('<p>')
                                             .addClass('card-text')
@@ -253,7 +257,7 @@ function getWeather(city) {
         });
 }
 
-//function to push button elements 
+//function to push button elements to 
 
 function submitCitySearch(event) {
     event.preventDefault();

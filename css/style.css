@@ -79,6 +79,7 @@ h2 {
     display: flex;
     align-items: center;
     margin-left: 1%;
+    margin-top: 15px;
 }
 
 /* style the text area where user inputs city name */
@@ -187,7 +188,7 @@ h3 {
 
 /* style the weather details in the .card-body */
 p {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: white;
 }
 

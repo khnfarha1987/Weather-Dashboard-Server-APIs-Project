@@ -1,1 +1,4 @@
-# Weather-Dashboard-Server-APIs-Project
+# Weather-Dashboard-Server-APIs-Project:
+
+# when a user open page then showing heading Weather Dashboard:
+![alt](./images/img-1.png)
