@@ -17,3 +17,10 @@
     * The humidity
     * The wind speed
  ![alt](./images/img-4.png) 
+
+# When a user view future weather conditions for that city they are presented with a 5-day forecast that displays:
+    * The date
+    * An icon representation of weather conditions
+    * The temperature
+    * The humidity
+ ![alt](./images/img-5.png)   
