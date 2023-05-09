@@ -1,33 +1,10 @@
-// ** START PSEUDO CODE (subject to change) ** //
-
-// when user searches for a city (clicks search button):
-//  - store the user input in a variable
-//  - use a fetch api to get the current & future conditions for that city
-//  - store that city into local storage
-// use the data from fetch to populate in the current-weather container:
-//  - name and today's date as M/DD/YYY
-//  - temp
-//  - wind
-//  - humidity
-//  - UV index (color coded for favorable(green), moderate(yellow), or severe(red))
-// use the data from fetch to populate in the five-day container:
-//  - date
-//  - an icon reprsentation of weather conditions
-//  - the temp
-//  - wind speed
-//  - humidity
-// use data in local.storage to create a button under the <hr> in search area for city history
-//  - when you click the button it displays the current and future conditions for that city
-
-// ** END PSEUDO CODE ** //
-
 // START GLOBAL VARIABLES //
 
 var openWeatherApiKey = '26ba3a7e283acb9cd1e8665c6c3b319a';
 var openWeatherCoordinatesUrl = 'https://api.openweathermap.org/data/2.5/weather?q=';
 var oneCallUrl = 'https://api.openweathermap.org/data/2.5/onecall?lat='
 var userFormEL = $('#search-form');
-var col2El = $('.col-lg-9');
+var col2El = $('.col2');
 var cityInputEl = $('#search-input');
 var fiveDayEl = $('#five-day');
 var searchHistoryEl = $('#history');
@@ -270,6 +247,9 @@ function submitCitySearch(event) {
         alert(city + ' is included in history below. Click the ' + city + ' button to get weather.');
         cityInputEl.val('');
     } else if (city) {
+        $('#current-weather').remove();
+        $('#five-day').empty();
+        $('#five-day-header').remove();
         getWeather(city);
         searchHistory(city);
         searchHistoryArray.searchedCity.push(city);
