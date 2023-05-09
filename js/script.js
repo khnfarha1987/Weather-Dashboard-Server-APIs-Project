@@ -42,3 +42,27 @@ function loadSearchHistory() {
 
     return searchHistoryArray;
 }
+
+//save to local storage
+function saveSearchHistory() {
+    localStorage.setItem('search history', JSON.stringify(searchHistoryArray));
+};
+
+//funciton to create history buttons
+function searchHistory(city) {
+    var searchHistoryBtn = $('<button>')
+        .addClass('btn')
+        .text(city)
+        .on('click', function () {
+            $('#current-weather').remove();
+            $('#five-day').empty();
+            $('#five-day-header').remove();
+            getWeather(city);
+        })
+        .attr({
+            type: 'button'
+        });
+
+    // append btn to search history div
+    searchHistoryEl.append(searchHistoryBtn);
+}
