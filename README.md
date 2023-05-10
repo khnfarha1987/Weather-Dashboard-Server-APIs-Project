@@ -63,6 +63,8 @@ The motivation behind this project was to create a weather dashboard application
  * When a user clicks on a city in the search history they are again presented with current and future conditions for that city.
  ![alt](./images/img-6.png) 
 
- # Deployed GitHub URL:
+ # Application GitHub URL:
  https://github.com/khnfarha1987/Weather-Dashboard-Server-APIs-Project
- 
+
+# Application Deployed live URL:
+https://khnfarha1987.github.io/Weather-Dashboard-Server-APIs-Project/
