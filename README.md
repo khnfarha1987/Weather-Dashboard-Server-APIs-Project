@@ -11,7 +11,7 @@ Server APIs allow developers to access their data and functionality by making re
   -The city name
   -The date
   -An icon representation of weather conditions
-  -The temperature 
+  -The temperature
   -The humidity
   -The wind speed
 
