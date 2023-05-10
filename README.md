@@ -33,7 +33,7 @@ The motivation behind this project was to create a weather dashboard application
  * JavaScript
  * OpenWeather API (server-side API). 
   
-# Images Links of this Project:
+# Image Links of this Project:
 
 * when a user open page then showing heading Weather Dashboard:
 ![alt](./images/img-1.png)
@@ -53,9 +53,12 @@ The motivation behind this project was to create a weather dashboard application
   -The wind speed
  ![alt](./images/img-4.png) 
 
-# When a user view future weather conditions for that city they are presented with a 5-day forecast that displays:
+* When a user view future weather conditions for that city they are presented with a 5-day forecast that displays:
   -The date
   -An icon representation of weather conditions
   -The temperature
   -The humidity
  ![alt](./images/img-5.png)   
+
+ * When a user clicks on a city in the search history they are again presented with current and future conditions for that city.
+ ![alt](./images/img-6.png) 
