@@ -9,7 +9,7 @@ var cityInputEl = $('#search-input');
 var fiveDayEl = $('#five-day');
 var searchHistoryEl = $('#history');
 var currentDay = moment().format('DD/MM/YYYY');
-const weatherIconUrl = 'http://openweathermap.org/img/wn/';
+const weatherIconUrl = 'https://openweathermap.org/img/wn/';
 var searchHistoryArray = loadSearchHistory();
 
 // END GLOBAL VARIABLES //
