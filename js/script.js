@@ -73,7 +73,6 @@ function searchHistory(city) {
 function getWeather(city) {
     // apiUrl for coordinates
     var apiCoordinatesUrl = openWeatherCoordinatesUrl + city + '&appid=' + openWeatherApiKey;
-    console.log(apiCoordinatesUrl);
     // fetch the coordinates for parameter city
     fetch(apiCoordinatesUrl)
         .then(function (coordinateResponse) {
